@@ -20,7 +20,12 @@ void checkInfix(string str)
                 ||str[i]=='*'||str[i]=='/'
                 ||str[i]=='^')
         {
+            if(s.top()!='#')
             s.push(str[i]);
+            else
+            {cout<<"expression is invalid\n";
+             s.push(1);
+             break;}
         }
         else if((str[i] >= 'a' && str[i] <= 'z')
                 ||(str[i] >= 'A' && str[i] <= 'Z')
@@ -31,15 +36,17 @@ void checkInfix(string str)
         }
     }
     if(s.top()=='#'&&counter==0)
-        {   cout<<"expression is valid";  }
+        {   cout<<"expression is valid\n";  }
     else
-        {   cout<<"expression is invalid"; }
+        {   cout<<"expression is invalid\n"; }
 }
 int main()
+{
+    for(int i=0;i<3;i++)
 {
     string str;
     cout<<"enter the infix expression: \n";
     getline(cin, str);
     checkInfix(str);
-    return 0;
+}    return 0;
 }
