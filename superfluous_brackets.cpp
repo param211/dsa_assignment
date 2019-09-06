@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 #include <stack>
 using namespace std;
 int precedence(char c)
@@ -16,18 +16,18 @@ int precedence(char c)
 
 string infixToPostfix(string s)
 {
-    std::stack<char> st;
+    stack<char> st;
     st.push('N');
     int l = s.length();
     string ns;
     for(int i = 0; i < l; i++)
     {
-        if((s[i] >= 'a' && s[i] <= 'z')||(s[i] >= 'A' && s[i] <= 'Z'))
-        ns+=s[i];
+        if((isalnum(s[i])))
+        { ns+=s[i]; }
 
         else if(s[i] == '(')
 
-        st.push('(');
+        { st.push('('); }
 
         else if(s[i] == ')')
         {
@@ -68,8 +68,7 @@ string infixToPostfix(string s)
 
 bool isOperand(char x)
 {
-   return (x >= 'a' && x <= 'z') ||
-          (x >= 'A' && x <= 'Z');
+   return (isalnum(x));
 }
 
 string PostfixToInfix(string exp)
@@ -89,20 +88,26 @@ string PostfixToInfix(string exp)
             s.pop();
             string op2 = s.top();
             s.pop();
-            s.push("(" + op2 + exp[i] +
-                   op1 + ")");
+           s.push("(" + op2 + exp[i] + op1 + ")");
         }
     }
     return s.top();
 }
+string RemoveOuterBrackets(string exp1)
+{
+    int l=exp1.length();
+    exp1[0]=' ';
+    exp1[l-1]=' ';
+    return(exp1);
+}
 int main()
 {
-    string str,str1,str2;
+    string str,str1,str2,str3;
     cout << "\n enter arithmetic expression: ";
     getline(cin,str);
     str1= infixToPostfix(str);
     str2= PostfixToInfix(str1);
-    cout<<"\n correct expression is :"<<str2;
-
+    str3= RemoveOuterBrackets(str2);
+    cout<<"\n correct expression is : "<<str3;
     return 0;
 }
