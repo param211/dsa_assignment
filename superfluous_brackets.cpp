@@ -100,7 +100,7 @@ string RemoveOuterBrackets(string exp1)
     exp1[l-1]=' ';
     return(exp1);
 }
-int main()
+void main()
 {
     string str,str1,str2,str3;
     cout << "\n enter arithmetic expression: ";
@@ -109,5 +109,5 @@ int main()
     str2= PostfixToInfix(str1);
     str3= RemoveOuterBrackets(str2);
     cout<<"\n correct expression is : "<<str3;
-    return 0;
+    return;
 }
