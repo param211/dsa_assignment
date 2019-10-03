@@ -1,37 +1,79 @@
-#include <bits/stdc++.h>
-#include <stack>
-using namespace std;
-string PostfixToInfix(string exp)
-{
-    stack<string> s;
+#include<bits/stdc++.h>
 
-    for (int i=0; exp[i]!='\0'; i++)
-    {	// If operand than push to stack in a string
-        if (isOperand(exp[i]))
+using namespace std;
+
+int precedence(char a)        //Function to return the precedence level of the operator
+{
+    if(a=='%') return 3;
+    else if(a=='*' || a=='/') return 2;
+    else if(a=='+' || a=='-') return 1;
+    else return -1;
+}
+
+string postfixToInfix(string postfix)
+{
+    stack<string> st;
+    string x,y;
+    for(int i=0;i<postfix.size();i++)
+    {
+        if(postfix[i]<='9' && postfix[i]>='0')
         {
-           string op(1, exp[i]);
-           s.push(op);
+            string a;
+            a.push_back(postfix[i]);
+            st.push(a);
         }
-		// else pop top 2 nodes from stack, push "node1" + operator + "node2" 
         else
         {
-            string op1 = s.top();
-            s.pop();
-            string op2 = s.top();
-            s.pop();
-           s.push("(" + op2 + exp[i] + op1 + ")");
+            y = st.top();
+            st.pop();
+            x = st.top();
+            st.pop();
+
+            string temp;
+
+            //Conditions to add the brackets at the right places while converting back to infix
+
+            if(x.size()==1)
+                temp = x + postfix[i];
+            else
+            {
+                int size_x = x.size() - 2;
+                while(x[size_x] == ')' || (x[size_x] >= '0' && x[size_x] <= '9'))
+                    size_x--;
+                if(precedence(x[size_x]) >= precedence(postfix[i]))
+                    temp = x + postfix[i];
+                else
+                    temp = '(' + x + ')' + postfix[i];
+            }
+            if(y.size()==1)
+                temp += y;
+            else
+            {
+                int size_y = 1;
+                while(y[size_y] == '(' || (y[size_y] >= '0' && y[size_y] <= '9'))
+                    size_y++;
+                if(precedence(y[size_y]) >= precedence(postfix[i]))
+                    temp += y;
+                else
+                    temp += '(' + y + ')';
+            }
+            st.push(temp);
         }
     }
-	// Now only top node left in string which is the required infix
-    return s.top();
+    return st.top();
 }
+
+//Main Function
 
 int main()
 {
-    string str,str1;
-    cout << "\n enter expression: ";
-    getline(cin,str);
-    str1= PostfixToInfix(str);
-    cout<<"\n correct expression is : "<<str1;
+    string exp,output;
+
+    cout<<"\nEnter the Postfix Expression(no spaces and use numbers only) : ";
+    cin>>exp;  
+
+    output = postfixToInfix(exp);
+    cout<<endl<<"Resulting Infix: "<<output<<endl;
+
     return 0;
 }
